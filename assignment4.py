@@ -8,30 +8,56 @@ options['ALLOW_SPEEDING'] = False
 
 class KalmanFilter:
     def __init__(self):
-        # Initial State
-        self.x = np.matrix([[55.],
-                            [3.],
-                            [5.],
+        # Initial State x, y, vx, vy
+        self.x = np.matrix([[0.],
+                            [0.],
+                            [0.],
+                            [0.],
                             [0.]])
 
         # Uncertainity Matrix
-        self.P = np.matrix([[0., 0.],
-                            [0., 0.]])
+        self.P = np.matrix([[100., 0., 0., 0., 0.],
+                            [0., 100., 0., 0., 0.],
+                            [0., 0., 100., 0., 0.],
+                            [0., 0., 0., 100., 0.],
+                            [0., 0., 0., 0., 100.]])
+
+        # Uncertainity Matrix
+        self.Q = np.matrix([[0.1, 0., 0., 0., 0.],
+                            [0., 0.1, 0., 0., 0.],
+                            [0., 0., 0.1, 0., 0.],
+                            [0., 0., 0., 0.1, 0.],
+                            [0., 0., 0., 0., 0.1]])
 
         # Next State Function
-        self.F = np.matrix([[0., 0.],
-                            [0., 0.]])
+        self.F = np.matrix([[1., 0., 2., 0., 0.],
+                            [0., 1., 2., 0., 0.],
+                            [0., 0., 1., 0., 0.],
+                            [0., 0., 0., 1., 2.],
+                            [0., 0., 0., 0., 1.]])
+
+        # Input
+        self.B = np.matrix([[0.],
+                            [0.]
 
         # Measurement Function
-        self.H = np.matrix([[0., 0.]])
+        self.H = np.matrix([[1., 0., 0., 0., 0.],
+                            [0., 1., 0., 0., 0.],
+                            [0., 0., 0., 1., 0.]])
 
         # Measurement Uncertainty
-        self.R = np.matrix([[0.0]])
+        self.R = np.matrix([[5.0, 0., 0.],
+                            [0., 5.0, 0.],
+                            [0., 0., 1.0]])
+
         # Identity Matrix
-        self.I = np.matrix([[1., 0., 0., 0.],
-                            [0., 1., 0., 0.],
-                            [0., 0., 1., 0.],
-                            [0., 0., 0., 1.]])
+        self.I = np.matrix([[1., 0., 0., 0., 0.],
+                            [0., 1., 0., 0., 0.],
+                            [0., 0., 1., 0., 0.],
+                            [0., 0., 0., 1., 0.],
+                            [0., 0., 0., 0., 1.]])
+
+
     def predict(self, dt):
         return
     def measure_and_update(self,measurements, dt):
